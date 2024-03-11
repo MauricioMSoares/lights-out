@@ -3,6 +3,11 @@ defmodule LightsOutWeb.Board do
 
   def mount(_params, _session, socket) do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
+    level = Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
+      {x, y} = {:rand.uniform(4), :rand.uniform(4)}
+      Map.put(acc, {x, y}, true)
+    end)
+    grid = Map.merge(grid, level)
 
     {:ok, assign(socket, grid: grid)}
   end
