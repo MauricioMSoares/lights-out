@@ -12,5 +12,11 @@
       </button>
     <% end %>
   </div>
-  <p class="text-3xl text-center" :if={@win}>You won!</p>
+  <p class="text-center">Nº of clicks: <%= @clicks %></p>
+  <p :if={@win} class="text-3xl text-center">You won!</p>
+  <div class="flex justify-center">
+    <button :if={@win} class="bg-black text-white w-24 px-2 py-2 font-semibold rounded-xl mt-4" phx-click="restart">
+      Play again
+    </button>
+  </div>
 </div>
