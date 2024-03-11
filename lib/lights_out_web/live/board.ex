@@ -13,12 +13,22 @@ defmodule LightsOutWeb.Board do
     grid_y = y |> String.to_integer()
 
     updated_grid =
-      grid
-      |> Map.put(
-        {grid_x, grid_y},
-        !grid[{grid_x, grid_y}]
-      )
+      find_adjacent_tiles(grid_x, grid_y)
+      |> Enum.reduce(%{}, fn point, acc ->
+        Map.put(acc, point, !grid[point])
+      end)
+      |> then(fn toggled_grid -> Map.merge(grid, toggled_grid) end)
 
     {:noreply, assign(socket, :grid, updated_grid)}
+  end
+
+  defp find_adjacent_tiles(x, y) do
+    prev_x = Kernel.max(0, x - 1)
+    next_x = Kernel.min(4, x + 1)
+
+    prev_y = Kernel.max(0, y - 1)
+    next_y = Kernel.min(4, y + 1)
+
+    [{x, y}, {prev_x, y}, {next_x, y}, {x, prev_y}, {x, next_y}]
   end
 end
