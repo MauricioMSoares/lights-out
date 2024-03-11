@@ -2,4 +2,8 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+button[data-on] {
+  background-color: gold;
+}
+
 /* This file is for your main application CSS */
