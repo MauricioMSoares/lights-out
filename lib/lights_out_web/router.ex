@@ -20,7 +20,6 @@ defmodule LightsOutWeb.Router do
     # get "/", PageController, :home
     live "/", Index
     live "/board", Board
-    live "/stats", Stats
   end
 
   # Other scopes may use custom stacks.

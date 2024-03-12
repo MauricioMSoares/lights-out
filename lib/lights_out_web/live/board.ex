@@ -3,8 +3,9 @@ defmodule LightsOutWeb.Board do
 
   def mount(_params, _session, socket) do
     grid = setup_grid()
+    start_datetime = DateTime.utc_now()
 
-    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: DateTime.utc_now())}
+    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: start_datetime)}
   end
 
   def handle_event("toggle", %{"x" => x, "y" => y}, socket) do
@@ -25,8 +26,7 @@ defmodule LightsOutWeb.Board do
 
     case win do
       true ->
-        socket = push_event(socket, "victory", %{win: win})
-        {:noreply, push_redirect(socket, to: "/stats")}
+        {:noreply, push_event(socket, "victory", %{win: win})}
 
       _ ->
         {:noreply, socket}
@@ -40,13 +40,13 @@ defmodule LightsOutWeb.Board do
   defp setup_grid do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
 
-    level =
-      Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
-        {x, y} = {:rand.uniform(4), :rand.uniform(4)}
-        Map.put(acc, {x, y}, true)
-      end)
+    # level =
+    #   Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
+    #     {x, y} = {:rand.uniform(4), :rand.uniform(4)}
+    #     Map.put(acc, {x, y}, true)
+    #   end)
 
-    # level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
+    level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
 
     Map.merge(grid, level)
   end

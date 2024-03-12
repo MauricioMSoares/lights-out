@@ -1,0 +1,11 @@
+<div class="flex flex-col justify-center text-center">
+  <p class="text-3xl text-center">You won!</p>
+  <p>Total clicks: <%= @clicks %></p>
+  <%!-- <p>Time spent: <%= @time_spent %></p> --%>
+  <button
+    class="bg-black w-48 text-white px-14 py-3 text-2xl font-semibold rounded-xl mt-4"
+    phx-click="restart"
+  >
+    Play again
+  </button>
+</div>

@@ -1,4 +1,4 @@
-<div class="flex flex-col max-w-lg mx-auto">
+<div :if={!@win} class="flex flex-col max-w-lg mx-auto">
   <div class="grid grid-rows-5 grid-cols-5 gap-2 mb-4">
     <%= for {{x, y}, value} <- @grid do %>
       <button
@@ -12,10 +12,10 @@
     <% end %>
   </div>
   <p class="text-center">Nº of clicks: <%= @clicks %></p>
-  <p :if={@win} class="text-3xl text-center">You won!</p>
   <div class="flex justify-center">
-    <button :if={@win} class="bg-black text-white w-24 px-2 py-2 font-semibold rounded-xl mt-4" phx-click="restart">
-      Play again
+    <button class="bg-black text-white w-24 px-2 py-2 font-semibold rounded-xl mt-4" phx-click="restart">
+      Restart
     </button>
   </div>
 </div>
+<.live_component :if={@win} module={LightsOutWeb.Stats} id={1} clicks={@clicks} />
