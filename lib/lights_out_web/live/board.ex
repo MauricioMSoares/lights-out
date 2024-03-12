@@ -4,7 +4,7 @@ defmodule LightsOutWeb.Board do
   def mount(_params, _session, socket) do
     grid = setup_grid()
 
-    {:ok, assign(socket, grid: grid, win: false, clicks: 0)}
+    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: DateTime.utc_now())}
   end
 
   def handle_event("toggle", %{"x" => x, "y" => y}, socket) do
@@ -24,8 +24,12 @@ defmodule LightsOutWeb.Board do
     socket = assign(socket, grid: updated_grid, win: win, clicks: clicks)
 
     case win do
-      true -> {:noreply, push_event(socket, "victory", %{win: win})}
-      _ -> {:noreply, socket}
+      true ->
+        socket = push_event(socket, "victory", %{win: win})
+        {:noreply, push_redirect(socket, to: "/stats")}
+
+      _ ->
+        {:noreply, socket}
     end
   end
 
@@ -41,6 +45,8 @@ defmodule LightsOutWeb.Board do
         {x, y} = {:rand.uniform(4), :rand.uniform(4)}
         Map.put(acc, {x, y}, true)
       end)
+
+    # level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
 
     Map.merge(grid, level)
   end
