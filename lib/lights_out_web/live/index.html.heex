@@ -1,0 +1,28 @@
+<div class="flex w-full justify-between">
+  <.live_component
+    module={LightsOutWeb.InstructionsGrid}
+    id={1}
+    grid={@grid}
+    default_true={[{0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}]}
+    text="Each click lights up all the adjacent tiles, in the shape of a cross."
+  />
+  <.live_component
+    module={LightsOutWeb.InstructionsGrid}
+    id={2}
+    grid={@grid}
+    default_true={[{0, 1}, {0, 2}, {1, 2}]}
+    text="The game starts with a random pattern of lights on."
+  />
+  <.live_component
+    module={LightsOutWeb.InstructionsGrid}
+    id={3}
+    grid={@grid}
+    default_true={[]}
+    text="Turn all of them off to win!"
+  />
+</div>
+<div class="flex justify-center">
+  <.link class="bg-black text-white px-20 py-3 text-2xl font-semibold rounded-xl mt-4" patch={~p"/board"}>
+    Start
+  </.link>
+</div>

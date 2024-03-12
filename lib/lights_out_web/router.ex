@@ -18,7 +18,8 @@ defmodule LightsOutWeb.Router do
     pipe_through :browser
 
     # get "/", PageController, :home
-    live "/", Board
+    live "/", Index
+    live "/board", Board
   end
 
   # Other scopes may use custom stacks.
