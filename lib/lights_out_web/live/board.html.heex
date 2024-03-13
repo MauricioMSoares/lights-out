@@ -11,11 +11,10 @@
       </button>
     <% end %>
   </div>
-  <p class="text-center">Nº of clicks: <%= @clicks %></p>
   <div class="flex justify-center">
     <button class="bg-black text-white w-24 px-2 py-2 font-semibold rounded-xl mt-4" phx-click="restart">
       Restart
     </button>
   </div>
 </div>
-<.live_component :if={@win} module={LightsOutWeb.Stats} id={1} clicks={@clicks} />
+<.live_component :if={@win} module={LightsOutWeb.Stats} id={1} clicks={@clicks} time_spent={@time_spent} />

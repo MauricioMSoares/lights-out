@@ -1,6 +1,8 @@
 defmodule LightsOutWeb.Board do
   use LightsOutWeb, :live_view
 
+  import LightsOut.Timer, only: [get_time: 1]
+
   def mount(_params, _session, socket) do
     grid = setup_grid()
     start_datetime = DateTime.utc_now()
@@ -26,6 +28,7 @@ defmodule LightsOutWeb.Board do
 
     case win do
       true ->
+        socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
         {:noreply, push_event(socket, "victory", %{win: win})}
 
       _ ->
