@@ -42,6 +42,7 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("restart", _params, socket) do
+    socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
     {:noreply, assign(socket, grid: setup_grid(), win: false, clicks: 0, start_datetime: DateTime.utc_now())}
   end
 
