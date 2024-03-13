@@ -11,10 +11,25 @@
       </button>
     <% end %>
   </div>
-  <div class="flex justify-center">
-    <button class="bg-black text-white w-24 px-2 py-2 font-semibold rounded-xl mt-4" phx-click="restart">
+  <div class="flex justify-evenly">
+    <.link
+      class="bg-black text-white w-28 h-12 px-2 py-2 font-semibold rounded-xl mt-4 flex justify-center items-center"
+      patch={~p"/"}
+    >
+      Main screen
+    </.link>
+    <button
+      class="bg-black text-white w-28 px-2 py-2 font-semibold rounded-xl mt-4"
+      phx-click="restart"
+    >
       Restart
     </button>
   </div>
 </div>
-<.live_component :if={@win} module={LightsOutWeb.Stats} id={1} clicks={@clicks} time_spent={@time_spent} />
+<.live_component
+  :if={@win}
+  module={LightsOutWeb.Stats}
+  id={1}
+  clicks={@clicks}
+  time_spent={@time_spent}
+/>
