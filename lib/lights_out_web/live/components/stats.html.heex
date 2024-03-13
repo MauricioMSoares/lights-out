@@ -4,7 +4,10 @@
   <p><b>Time spent:</b> <%= @time_spent %></p>
   <button
     class="bg-black w-56 text-white px-14 py-3 text-2xl font-semibold rounded-xl mt-4"
-    phx-click="restart"
+    phx-click={
+      Phoenix.LiveView.JS.dispatch("js:play-sound", detail: %{name: "menu_sfx"})
+      |> Phoenix.LiveView.JS.push("restart")
+    }
   >
     Play again
   </button>

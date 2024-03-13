@@ -6,6 +6,7 @@ defmodule LightsOutWeb.Board do
   def mount(_params, _session, socket) do
     grid = setup_grid()
     start_datetime = DateTime.utc_now()
+    socket = assign_sounds(socket)
 
     {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: start_datetime)}
   end
@@ -40,6 +41,11 @@ defmodule LightsOutWeb.Board do
     {:noreply, assign(socket, grid: setup_grid(), win: false, clicks: 0)}
   end
 
+  def handle_event("navigate", _params, socket) do
+    Process.sleep(200)
+    {:noreply, push_navigate(socket, to: "/")}
+  end
+
   defp setup_grid do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
 
@@ -72,5 +78,16 @@ defmodule LightsOutWeb.Board do
 
   defp increment(clicks) do
     clicks + 1
+  end
+
+  defp assign_sounds(socket) do
+    json =
+      Jason.encode!(%{
+        menu_sfx: ~p"/audio/menu-click-sfx.mp3",
+        light_sfx: ~p"/audio/light-switch-sfx.mp3",
+        victory_sfx: ~p"/audio/victory-sfx.mp3"
+      })
+
+    assign(socket, :sounds, json)
   end
 end
