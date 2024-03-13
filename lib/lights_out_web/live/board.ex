@@ -30,11 +30,13 @@ defmodule LightsOutWeb.Board do
     case win do
       true ->
         socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
+        socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
         socket = push_event(socket, "victory", %{win: win})
         socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
         {:noreply, socket}
 
       _ ->
+        socket = push_event(socket, "play-bg-sound", %{name: "bg_sfx", clicks: clicks})
         {:noreply, socket}
     end
   end
@@ -51,13 +53,13 @@ defmodule LightsOutWeb.Board do
   defp setup_grid do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
 
-    # level =
-    #   Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
-    #     {x, y} = {:rand.uniform(4), :rand.uniform(4)}
-    #     Map.put(acc, {x, y}, true)
-    #   end)
+    level =
+      Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
+        {x, y} = {:rand.uniform(4), :rand.uniform(4)}
+        Map.put(acc, {x, y}, true)
+      end)
 
-    level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
+    # level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
 
     Map.merge(grid, level)
   end
@@ -87,7 +89,8 @@ defmodule LightsOutWeb.Board do
       Jason.encode!(%{
         menu_sfx: ~p"/audio/menu-click-sfx.mp3",
         light_sfx: ~p"/audio/light-switch-sfx.mp3",
-        victory_sfx: ~p"/audio/victory-sfx.mp3"
+        victory_sfx: ~p"/audio/victory-sfx.mp3",
+        bg_sfx: ~p"/audio/bg-sfx.mp3"
       })
 
     assign(socket, :sounds, json)

@@ -39,6 +39,28 @@ export const hooks = {
         // console.log("STOP SOUND:", name)
         this.stopSound(name)
       })
+
+      window.addEventListener("js:play-bg-sound", (data) => {
+        var name = data.detail.name
+
+        if (data.detail.clicks == 1) {
+          this.playSound(name)
+          setInterval(() => {
+            this.playSound(name)
+          }, 47500)
+        }
+      })
+
+      window.addEventListener("phx:play-bg-sound", (data) => {
+        var name = data.detail.name
+
+        if (data.detail.clicks == 1) {
+          this.playSound(name)
+          setInterval(() => {
+            this.playSound(name)
+          }, 47500)
+        }
+      })
     },
 
     destroyed() {
