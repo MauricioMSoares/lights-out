@@ -30,7 +30,9 @@ defmodule LightsOutWeb.Board do
     case win do
       true ->
         socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
-        {:noreply, push_event(socket, "victory", %{win: win})}
+        socket = push_event(socket, "victory", %{win: win})
+        socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
+        {:noreply, socket}
 
       _ ->
         {:noreply, socket}
@@ -38,7 +40,7 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("restart", _params, socket) do
-    {:noreply, assign(socket, grid: setup_grid(), win: false, clicks: 0)}
+    {:noreply, assign(socket, grid: setup_grid(), win: false, clicks: 0, start_datetime: DateTime.utc_now())}
   end
 
   def handle_event("navigate", _params, socket) do

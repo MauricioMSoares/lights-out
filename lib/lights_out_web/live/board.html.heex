@@ -4,7 +4,10 @@
       <%= for {{x, y}, value} <- @grid do %>
         <button
           class="block h-20 px-4 py-6 text-center border rounded bg-stone-300"
-          phx-click="toggle"
+          phx-click={
+            Phoenix.LiveView.JS.dispatch("js:play-sound", detail: %{name: "light_sfx"})
+            |> Phoenix.LiveView.JS.push("toggle")
+          }
           phx-value-x={x}
           phx-value-y={y}
           data-on={value}
