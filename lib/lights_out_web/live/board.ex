@@ -8,7 +8,14 @@ defmodule LightsOutWeb.Board do
     start_datetime = DateTime.utc_now()
     socket = assign_sounds(socket)
 
-    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: start_datetime, bg_sound_timer: nil)}
+    {:ok,
+     assign(socket,
+       grid: grid,
+       win: false,
+       clicks: 0,
+       start_datetime: start_datetime,
+       bg_sound_timer: nil
+     )}
   end
 
   def handle_event("toggle", %{"x" => x, "y" => y}, socket) do
@@ -27,7 +34,7 @@ defmodule LightsOutWeb.Board do
     win = updated_grid |> check_win()
     socket = assign(socket, grid: updated_grid, win: win, clicks: clicks)
 
-    if (clicks == 1) do
+    if clicks == 1 do
       send(self(), :play_bg_sound)
     end
 
@@ -45,7 +52,7 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("restart", _params, socket) do
-    if (socket.assigns.bg_sound_timer) do
+    if socket.assigns.bg_sound_timer do
       send(self(), :stop_bg_sound)
     end
 
@@ -72,15 +79,28 @@ defmodule LightsOutWeb.Board do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
 
     level =
-      Enum.reduce(1..:rand.uniform(25), %{}, fn _, acc ->
+      Enum.reduce(50..100, grid, fn _, acc ->
         {x, y} = {:rand.uniform(4), :rand.uniform(4)}
-        Map.put(acc, {x, y}, true)
+        toggle(acc, x, y)
       end)
 
-    # level = Map.new(%{{0, 0} => true, {0, 1} => true, {1, 0} => true})
-
-    Map.merge(grid, level)
+    level
   end
+
+  defp toggle(grid, x, y) do
+    grid
+    |> toggle_light({x, y})
+    |> toggle_light({x - 1, y})
+    |> toggle_light({x + 1, y})
+    |> toggle_light({x, y - 1})
+    |> toggle_light({x, y + 1})
+  end
+
+  defp toggle_light(grid, {x, y}) when x in 0..4 and y in 0..4 do
+    Map.update(grid, {x, y}, false, &(!&1))
+  end
+
+  defp toggle_light(grid, _), do: grid
 
   defp find_adjacent_tiles(x, y) do
     prev_x = Kernel.max(0, x - 1)
