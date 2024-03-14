@@ -8,7 +8,7 @@ defmodule LightsOutWeb.Board do
     start_datetime = DateTime.utc_now()
     socket = assign_sounds(socket)
 
-    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: start_datetime)}
+    {:ok, assign(socket, grid: grid, win: false, clicks: 0, start_datetime: start_datetime, bg_sound_timer: nil)}
   end
 
   def handle_event("toggle", %{"x" => x, "y" => y}, socket) do
@@ -27,28 +27,45 @@ defmodule LightsOutWeb.Board do
     win = updated_grid |> check_win()
     socket = assign(socket, grid: updated_grid, win: win, clicks: clicks)
 
+    if (clicks == 1) do
+      send(self(), :play_bg_sound)
+    end
+
     case win do
       true ->
         socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
-        socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
+        send(self(), :stop_bg_sound)
         socket = push_event(socket, "victory", %{win: win})
         socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
         {:noreply, socket}
 
       _ ->
-        socket = push_event(socket, "play-bg-sound", %{name: "bg_sfx", clicks: clicks})
         {:noreply, socket}
     end
   end
 
   def handle_event("restart", _params, socket) do
-    socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
-    {:noreply, assign(socket, grid: setup_grid(), win: false, clicks: 0, start_datetime: DateTime.utc_now())}
+    if (socket.assigns.bg_sound_timer) do
+      send(self(), :stop_bg_sound)
+    end
+
+    {:noreply,
+     assign(socket, grid: setup_grid(), win: false, clicks: 0, start_datetime: DateTime.utc_now())}
   end
 
   def handle_event("navigate", _params, socket) do
     Process.sleep(200)
     {:noreply, push_navigate(socket, to: "/")}
+  end
+
+  def handle_info(:play_bg_sound, socket) do
+    socket = push_event(socket, "play-sound", %{name: "bg_sfx"})
+    {:noreply, start_bg_sound(socket)}
+  end
+
+  def handle_info(:stop_bg_sound, socket) do
+    socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
+    {:noreply, stop_bg_sound(socket)}
   end
 
   defp setup_grid do
@@ -83,6 +100,17 @@ defmodule LightsOutWeb.Board do
 
   defp increment(clicks) do
     clicks + 1
+  end
+
+  defp start_bg_sound(socket) do
+    timer_ref = Process.send_after(self(), :play_bg_sound, 47500)
+    assign(socket, bg_sound_timer: timer_ref)
+  end
+
+  defp stop_bg_sound(socket) do
+    timer_ref = socket.assigns.bg_sound_timer
+    Process.cancel_timer(timer_ref)
+    assign(socket, bg_sound_timer: nil)
   end
 
   defp assign_sounds(socket) do

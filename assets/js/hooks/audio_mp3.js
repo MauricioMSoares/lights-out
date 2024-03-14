@@ -40,6 +40,8 @@ export const hooks = {
         this.stopSound(name)
       })
 
+      // Unused
+      // Receives a request and plays a song in a loop
       window.addEventListener("js:play-bg-sound", (data) => {
         var name = data.detail.name
 
@@ -51,6 +53,8 @@ export const hooks = {
         }
       })
 
+      // Unused
+      // Receives a request and plays a song in a loop
       window.addEventListener("phx:play-bg-sound", (data) => {
         var name = data.detail.name
 
