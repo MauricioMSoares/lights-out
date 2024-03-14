@@ -5,7 +5,6 @@ defmodule LightsOutWeb.Board do
 
   def mount(_params, _session, socket) do
     grid = setup_grid()
-    start_datetime = DateTime.utc_now()
     socket = assign_sounds(socket)
 
     {:ok,
@@ -13,7 +12,6 @@ defmodule LightsOutWeb.Board do
        grid: grid,
        win: false,
        clicks: 0,
-       start_datetime: start_datetime,
        bg_sound_timer: nil
      )}
   end
@@ -32,7 +30,15 @@ defmodule LightsOutWeb.Board do
 
     clicks = socket.assigns.clicks |> increment()
     win = updated_grid |> check_win()
-    socket = assign(socket, grid: updated_grid, win: win, clicks: clicks)
+
+    start_datetime =
+      if clicks == 1 do
+        DateTime.utc_now()
+      else
+        socket.assigns.start_datetime
+      end
+
+    socket = assign(socket, grid: updated_grid, win: win, clicks: clicks, start_datetime: start_datetime)
 
     if clicks == 1 do
       send(self(), :play_bg_sound)
