@@ -12,7 +12,9 @@ defmodule LightsOutWeb.Board do
        grid: grid,
        win: false,
        clicks: 0,
-       bg_sound_timer: nil
+       bg_sound_timer: nil,
+       sfx: true,
+       music: true
      )}
   end
 
@@ -38,18 +40,21 @@ defmodule LightsOutWeb.Board do
         socket.assigns.start_datetime
       end
 
-    socket = assign(socket, grid: updated_grid, win: win, clicks: clicks, start_datetime: start_datetime)
+    socket =
+      assign(socket, grid: updated_grid, win: win, clicks: clicks, start_datetime: start_datetime)
 
-    if clicks == 1 do
+    if clicks == 1 and socket.assigns.music do
       send(self(), :play_bg_sound)
     end
 
     case win do
       true ->
         socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
-        send(self(), :stop_bg_sound)
+        if socket.assigns.music do
+          send(self(), :stop_bg_sound)
+          send(self(), :play_win)
+        end
         socket = push_event(socket, "victory", %{win: win})
-        socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
         {:noreply, socket}
 
       _ ->
@@ -71,6 +76,25 @@ defmodule LightsOutWeb.Board do
     {:noreply, push_navigate(socket, to: "/")}
   end
 
+  def handle_event("toggle_sfx", _params, socket) do
+    {:noreply, assign(socket, sfx: !socket.assigns.sfx)}
+  end
+
+  def handle_event("toggle_music", _params, socket) do
+    case socket.assigns.clicks > 0 do
+      true ->
+        case socket.assigns.music do
+          true -> send(self(), :stop_bg_sound)
+          false -> send(self(), :play_bg_sound)
+        end
+
+      false ->
+        {:noreply, socket}
+    end
+
+    {:noreply, assign(socket, music: !socket.assigns.music)}
+  end
+
   def handle_info(:play_bg_sound, socket) do
     socket = push_event(socket, "play-sound", %{name: "bg_sfx"})
     {:noreply, start_bg_sound(socket)}
@@ -79,6 +103,11 @@ defmodule LightsOutWeb.Board do
   def handle_info(:stop_bg_sound, socket) do
     socket = push_event(socket, "stop-sound", %{name: "bg_sfx"})
     {:noreply, stop_bg_sound(socket)}
+  end
+
+  def handle_info(:play_win, socket) do
+    socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
+    {:noreply, socket}
   end
 
   defp setup_grid do

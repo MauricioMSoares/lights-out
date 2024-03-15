@@ -26,8 +26,12 @@
     <button
       class="bg-black text-white px-20 py-3 text-2xl font-semibold rounded-xl mt-4"
       phx-click={
-        Phoenix.LiveView.JS.dispatch("js:play-sound", detail: %{name: "menu_sfx"})
-        |> Phoenix.LiveView.JS.push("start")
+        if @sfx do
+          Phoenix.LiveView.JS.dispatch("js:play-sound", detail: %{name: "menu_sfx"})
+          |> Phoenix.LiveView.JS.push("start")
+        else
+          Phoenix.LiveView.JS.push("start")
+        end
       }
     >
       Start
