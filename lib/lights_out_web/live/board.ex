@@ -6,6 +6,7 @@ defmodule LightsOutWeb.Board do
   alias LightsOut.SoundServer
 
   def mount(_params, _session, socket) do
+    Phoenix.PubSub.subscribe(LightsOut.PubSub, "cheer")
     sound = SoundServer.get_settings()
     grid = setup_grid()
     socket = assign_sounds(socket)
@@ -100,6 +101,11 @@ defmodule LightsOutWeb.Board do
     {:noreply, assign(socket, music: !socket.assigns.music)}
   end
 
+  def handle_event("shoot_confetti", _params, socket) do
+    Phoenix.PubSub.broadcast(LightsOut.PubSub, "cheer", :cheer)
+    {:noreply, socket}
+  end
+
   def handle_info(:play_bg_sound, socket) do
     socket = push_event(socket, "play-sound", %{name: "bg_sfx"})
     {:noreply, start_bg_sound(socket)}
@@ -112,6 +118,11 @@ defmodule LightsOutWeb.Board do
 
   def handle_info(:play_win, socket) do
     socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
+    {:noreply, socket}
+  end
+
+  def handle_info(:cheer, socket) do
+    socket = push_event(socket, "cheer", %{message: "Sending confetti"})
     {:noreply, socket}
   end
 

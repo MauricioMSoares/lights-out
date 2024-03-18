@@ -55,6 +55,17 @@ window.addEventListener("phx:victory", (e) => {
   }
 })
 
+let cheerButton = document.querySelector("#cheer_button")
+
+window.addEventListener("phx:cheer", (e) => {
+  shootConfetti()
+  cheerButton.disabled = true
+  
+  setTimeout(() => {
+    cheerButton.disabled = false
+  }, 3000)
+})
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks })
 

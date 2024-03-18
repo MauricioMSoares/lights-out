@@ -1,19 +1,32 @@
 <main class="px-4 py-20 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-2xl">
     <h1 class="text-center text-4xl font-bold font-mono">Lights Out</h1>
-    <div class="flex justify-end">
-      <span
-        class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 cursor-pointer"
-        phx-click="toggle_sfx"
-      >
-        <%= if @sfx, do: "volume_up", else: "volume_off" %>
-      </span>
-      <span
-        class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 ml-1 cursor-pointer"
-        phx-click="toggle_music"
-      >
-        <%= if @music, do: "music_note", else: "music_off" %>
-      </span>
+    <div class="flex justify-between">
+      <%= if Map.has_key?(assigns, :win) do %>
+        <span
+          id="cheer_button"
+          class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 cursor-pointer"
+          phx-click="shoot_confetti"
+        >
+          celebration
+        </span>
+      <% else %>
+        <span></span>
+      <% end %>
+      <div>
+        <span
+          class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 cursor-pointer"
+          phx-click="toggle_sfx"
+        >
+          <%= if @sfx, do: "volume_up", else: "volume_off" %>
+        </span>
+        <span
+          class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 cursor-pointer"
+          phx-click="toggle_music"
+        >
+          <%= if @music, do: "music_note", else: "music_off" %>
+        </span>
+      </div>
     </div>
     <.flash_group flash={@flash} />
     <%= @inner_content %>
