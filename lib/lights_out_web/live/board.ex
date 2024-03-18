@@ -3,7 +3,10 @@ defmodule LightsOutWeb.Board do
 
   import LightsOut.Timer, only: [get_time: 1]
 
+  alias LightsOut.SoundServer
+
   def mount(_params, _session, socket) do
+    sound = SoundServer.get_settings()
     grid = setup_grid()
     socket = assign_sounds(socket)
 
@@ -13,8 +16,8 @@ defmodule LightsOutWeb.Board do
        win: false,
        clicks: 0,
        bg_sound_timer: nil,
-       sfx: true,
-       music: true
+       sfx: sound.sfx,
+       music: sound.music
      )}
   end
 
@@ -77,10 +80,12 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("toggle_sfx", _params, socket) do
+    SoundServer.set_sfx(!socket.assigns.sfx)
     {:noreply, assign(socket, sfx: !socket.assigns.sfx)}
   end
 
   def handle_event("toggle_music", _params, socket) do
+    SoundServer.set_music(!socket.assigns.music)
     case socket.assigns.clicks > 0 do
       true ->
         case socket.assigns.music do

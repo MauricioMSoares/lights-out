@@ -1,11 +1,14 @@
 defmodule LightsOutWeb.Index do
   use LightsOutWeb, :live_view
 
+  alias LightsOut.SoundServer
+
   def mount(_params, _session, socket) do
+    sound = SoundServer.get_settings()
     grid = for x <- 0..2, y <- 0..2, into: %{}, do: {{x, y}, false}
     socket = assign_sounds(socket)
 
-    {:ok, assign(socket, grid: grid, sfx: true, music: true)}
+    {:ok, assign(socket, grid: grid, sfx: sound.sfx, music: sound.music)}
   end
 
   def handle_event("start", _params, socket) do
@@ -14,10 +17,12 @@ defmodule LightsOutWeb.Index do
   end
 
   def handle_event("toggle_sfx", _params, socket) do
+    SoundServer.set_sfx(!socket.assigns.sfx)
     {:noreply, assign(socket, sfx: !socket.assigns.sfx)}
   end
 
   def handle_event("toggle_music", _params, socket) do
+    SoundServer.set_music(!socket.assigns.music)
     {:noreply, assign(socket, music: !socket.assigns.music)}
   end
 
