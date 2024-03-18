@@ -4,6 +4,10 @@ defmodule LightsOutWeb.Board do
   import LightsOut.Timer, only: [get_time: 1]
 
   def mount(_params, _session, socket) do
+    Phoenix.PubSub.subscribe(LightsOut.PubSub, "user_sfx")
+    Phoenix.PubSub.subscribe(LightsOut.PubSub, "user_music")
+    sfx = Map.get(socket.assigns, :sfx)
+    music = Map.get(socket.assigns, :music)
     grid = setup_grid()
     socket = assign_sounds(socket)
 
@@ -13,8 +17,8 @@ defmodule LightsOutWeb.Board do
        win: false,
        clicks: 0,
        bg_sound_timer: nil,
-       sfx: true,
-       music: true
+       sfx: sfx,
+       music: music
      )}
   end
 
@@ -77,10 +81,14 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("toggle_sfx", _params, socket) do
-    {:noreply, assign(socket, sfx: !socket.assigns.sfx)}
+    sfx_state = !socket.assigns.sfx
+    Phoenix.PubSub.broadcast(LightsOut.PubSub, "user_sfx", {:sfx, sfx_state})
+    {:noreply, assign(socket, sfx: sfx_state)}
   end
 
   def handle_event("toggle_music", _params, socket) do
+    music_state = !socket.assigns.music
+    Phoenix.PubSub.broadcast(LightsOut.PubSub, "user_music", {:music, music_state})
     case socket.assigns.clicks > 0 do
       true ->
         case socket.assigns.music do
@@ -92,7 +100,7 @@ defmodule LightsOutWeb.Board do
         {:noreply, socket}
     end
 
-    {:noreply, assign(socket, music: !socket.assigns.music)}
+    {:noreply, assign(socket, music: music_state)}
   end
 
   def handle_info(:play_bg_sound, socket) do
@@ -108,6 +116,14 @@ defmodule LightsOutWeb.Board do
   def handle_info(:play_win, socket) do
     socket = push_event(socket, "play-sound", %{name: "victory_sfx"})
     {:noreply, socket}
+  end
+
+  def handle_info({:sfx, music_state}, socket) do
+    {:noreply, assign(socket, sfx: music_state)}
+  end
+
+  def handle_info({:music, music_state}, socket) do
+    {:noreply, assign(socket, music: music_state)}
   end
 
   defp setup_grid do
