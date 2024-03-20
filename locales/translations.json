@@ -1,0 +1,50 @@
+{
+  "en": {
+    "instruction1": "Each click switches the adjacent lights, in the shape of a cross.",
+    "instruction2": "The game starts with a random pattern of lights on.",
+    "instruction3": "Turn all of them off to win!",
+    "start": "Start",
+    "restart": "Restart",
+    "main_screen": "Main Screen",
+    "victory": "You won!",
+    "clicks": "Total clicks: ",
+    "time": "Time spent: ",
+    "play_again": "Play again"
+  },
+  "es": {
+    "instruction1": "Cada clic cambia las luces adyacentes, en forma de cruz.",
+    "instruction2": "El juego comienza con un patrón aleatorio de luces encendidas.",
+    "instruction3": "¡Apaga todas para ganar!",
+    "start": "Comenzar",
+    "restart": "Reiniciar",
+    "main_screen": "Pantalla principal",
+    "victory": "¡Ganaste!",
+    "clicks": "Total de clics: ",
+    "time": "Tiempo transcurrido: ",
+    "play_again": "Jugar de nuevo"
+  },
+  "pt": {
+    "instruction1": "Cada clique muda as luzes adjacentes, em forma de cruz.",
+    "instruction2": "O jogo começa com um padrão aleatório de luzes acesas.",
+    "instruction3": "Apague todas para ganhar!",
+    "start": "Começar",
+    "restart": "Reiniciar",
+    "main_screen": "Tela principal",
+    "victory": "Você ganhou!",
+    "clicks": "Total de cliques: ",
+    "time": "Tempo decorrido: ",
+    "play_again": "Jogar novamente"
+  },
+  "ja": {
+    "instruction1": "隣り合うライトをクリックすると、その周囲のライトが切り替わります。",
+    "instruction2": "ゲームはランダムなパターンで始まります。",
+    "instruction3": "すべてのライトを消して勝利しましょう！",
+    "start": "スタート",
+    "restart": "リスタート",
+    "main_screen": "メイン画面",
+    "victory": "勝利！",
+    "clicks": "クリック数: ",
+    "time": "経過時間: ",
+    "play_again": "もう一度プレイ"
+  }
+}

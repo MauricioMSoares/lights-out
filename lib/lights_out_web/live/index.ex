@@ -26,6 +26,13 @@ defmodule LightsOutWeb.Index do
     {:noreply, assign(socket, music: !socket.assigns.music)}
   end
 
+  def handle_info({:language_changed, locale}, socket) do
+    translations = LightsOut.Translations.get_translations()
+    translations = Map.get(translations, locale, %{})
+
+    {:noreply, assign(socket, translations: translations)}
+  end
+
   defp assign_sounds(socket) do
     json =
       Jason.encode!(%{

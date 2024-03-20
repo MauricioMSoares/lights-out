@@ -135,6 +135,13 @@ defmodule LightsOutWeb.Board do
     {:noreply, assign(socket, cheer_button_enabled: true)}
   end
 
+  def handle_info({:language_changed, locale}, socket) do
+    translations = LightsOut.Translations.get_translations()
+    translations = Map.get(translations, locale, %{})
+
+    {:noreply, assign(socket, translations: translations)}
+  end
+
   defp setup_grid do
     grid = for x <- 0..4, y <- 0..4, into: %{}, do: {{x, y}, false}
 
