@@ -18,7 +18,8 @@ defmodule LightsOutWeb.Board do
        clicks: 0,
        bg_sound_timer: nil,
        sfx: sound.sfx,
-       music: sound.music
+       music: sound.music,
+       cheer_button_enabled: true
      )}
   end
 
@@ -76,6 +77,7 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_event("navigate", _params, socket) do
+    Phoenix.PubSub.unsubscribe(LightsOut.PubSub, "cheer")
     Process.sleep(200)
     {:noreply, push_navigate(socket, to: "/")}
   end
@@ -103,6 +105,9 @@ defmodule LightsOutWeb.Board do
 
   def handle_event("shoot_confetti", _params, socket) do
     Phoenix.PubSub.broadcast(LightsOut.PubSub, "cheer", :cheer)
+    socket = assign(socket, cheer_button_enabled: false)
+    Process.send_after(self(), :enable_cheer_button, 10000)
+
     {:noreply, socket}
   end
 
@@ -124,6 +129,10 @@ defmodule LightsOutWeb.Board do
   def handle_info(:cheer, socket) do
     socket = push_event(socket, "cheer", %{message: "Sending confetti"})
     {:noreply, socket}
+  end
+
+  def handle_info(:enable_cheer_button, socket) do
+    {:noreply, assign(socket, cheer_button_enabled: true)}
   end
 
   defp setup_grid do
