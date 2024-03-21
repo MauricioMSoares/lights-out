@@ -4,9 +4,11 @@ defmodule LightsOutWeb.Board do
   import LightsOut.Timer, only: [get_time: 2]
 
   alias LightsOut.SoundServer
+  alias LightsOut.LanguageServer
 
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(LightsOut.PubSub, "cheer")
+    language = LanguageServer.get_settings()
     sound = SoundServer.get_settings()
     grid = setup_grid()
     socket = assign_sounds(socket)
@@ -20,7 +22,7 @@ defmodule LightsOutWeb.Board do
        sfx: sound.sfx,
        music: sound.music,
        cheer_button_enabled: true,
-       locale: "en"
+       locale: language.locale
      )}
   end
 
@@ -137,10 +139,7 @@ defmodule LightsOutWeb.Board do
   end
 
   def handle_info({:language_changed, locale}, socket) do
-    translations = LightsOut.Translations.get_translations()
-    translations = Map.get(translations, locale, %{})
-
-    {:noreply, assign(socket, translations: translations)}
+    {:noreply, assign(socket, locale: locale)}
   end
 
   defp setup_grid do

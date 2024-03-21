@@ -10,6 +10,7 @@ defmodule LightsOut.Application do
     children = [
       LightsOutWeb.Telemetry,
       {LightsOut.SoundServer, %{sfx: true, music: true}},
+      {LightsOut.LanguageServer, %{locale: "en"}},
       {DNSCluster, query: Application.get_env(:lights_out, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: LightsOut.PubSub},
       # Start the Finch HTTP client for sending emails

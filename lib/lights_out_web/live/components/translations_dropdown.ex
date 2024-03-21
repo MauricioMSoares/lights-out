@@ -2,6 +2,7 @@ defmodule LightsOutWeb.TranslationsDropdown do
   use LightsOutWeb, :live_component
 
   alias LightsOut.Translations
+  alias LightsOut.LanguageServer
 
   def mount(socket) do
     languages = Translations.get_translations()
@@ -12,9 +13,10 @@ defmodule LightsOutWeb.TranslationsDropdown do
     {:noreply, assign(socket, dropdown_visible: true)}
   end
 
-  def handle_event("change_language", %{"translations_dropdown" => language_code}, socket) do
-    send(self(), {:language_changed, language_code})
-    {:noreply, assign(socket, selected_language: language_code)}
+  def handle_event("change_language", %{"value" => locale}, socket) do
+    LanguageServer.set_language(locale)
+    send(self(), {:language_changed, locale})
+    {:noreply, assign(socket, locale: locale, dropdown_visible: false)}
   end
 
   def handle_event("close_dropdown", _params, socket) do

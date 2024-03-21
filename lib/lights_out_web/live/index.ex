@@ -2,13 +2,15 @@ defmodule LightsOutWeb.Index do
   use LightsOutWeb, :live_view
 
   alias LightsOut.SoundServer
+  alias LightsOut.LanguageServer
 
   def mount(_params, _session, socket) do
+    language = LanguageServer.get_settings()
     sound = SoundServer.get_settings()
     grid = for x <- 0..2, y <- 0..2, into: %{}, do: {{x, y}, false}
     socket = assign_sounds(socket)
 
-    {:ok, assign(socket, grid: grid, sfx: sound.sfx, music: sound.music, locale: "en")}
+    {:ok, assign(socket, grid: grid, sfx: sound.sfx, music: sound.music, locale: language.locale)}
   end
 
   def handle_event("start", _params, socket) do
