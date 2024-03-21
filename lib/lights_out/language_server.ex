@@ -9,16 +9,16 @@ defmodule LightsOut.LanguageServer do
     {:ok, default}
   end
 
-  def set_language(value) do
-    GenServer.cast(__MODULE__, {:set_language, value})
+  def set_locale(value) do
+    GenServer.cast(__MODULE__, {:set_locale, value})
   end
 
   def get_settings do
     GenServer.call(__MODULE__, :get_settings)
   end
 
-  def handle_cast({:set_language, value}, state) do
-    {:noreply, Map.put(state, :language, value)}
+  def handle_cast({:set_locale, value}, state) do
+    {:noreply, Map.put(state, :locale, value)}
   end
 
   def handle_call(:get_settings, _from, state) do

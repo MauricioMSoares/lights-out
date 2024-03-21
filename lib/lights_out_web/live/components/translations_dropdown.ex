@@ -14,12 +14,8 @@ defmodule LightsOutWeb.TranslationsDropdown do
   end
 
   def handle_event("change_language", %{"value" => locale}, socket) do
-    LanguageServer.set_language(locale)
+    LanguageServer.set_locale(locale)
     send(self(), {:language_changed, locale})
     {:noreply, assign(socket, locale: locale, dropdown_visible: false)}
-  end
-
-  def handle_event("close_dropdown", _params, socket) do
-    {:noreply, assign(socket, dropdown_visible: false)}
   end
 end
