@@ -5,21 +5,21 @@
       id={1}
       grid={@grid}
       default_true={[{0, 1}, {1, 0}, {1, 1}, {1, 2}, {2, 1}]}
-      text="Each click switches the adjacent lights, in the shape of a cross."
+      text={LightsOut.Translations.get_translation(@locale, "instruction1")}
     />
     <.live_component
       module={LightsOutWeb.InstructionsGrid}
       id={2}
       grid={@grid}
       default_true={[{0, 1}, {0, 2}, {1, 2}]}
-      text="The game starts with a random pattern of lights on."
+      text={LightsOut.Translations.get_translation(@locale, "instruction2")}
     />
     <.live_component
       module={LightsOutWeb.InstructionsGrid}
       id={3}
       grid={@grid}
       default_true={[]}
-      text="Turn all of them off to win!"
+      text={LightsOut.Translations.get_translation(@locale, "instruction3")}
     />
   </div>
   <div class="flex justify-center">
@@ -34,7 +34,7 @@
         end
       }
     >
-      Start
+      <%= LightsOut.Translations.get_translation(@locale, "start") %>
     </button>
   </div>
 </div>

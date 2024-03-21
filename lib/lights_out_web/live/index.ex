@@ -8,7 +8,7 @@ defmodule LightsOutWeb.Index do
     grid = for x <- 0..2, y <- 0..2, into: %{}, do: {{x, y}, false}
     socket = assign_sounds(socket)
 
-    {:ok, assign(socket, grid: grid, sfx: sound.sfx, music: sound.music)}
+    {:ok, assign(socket, grid: grid, sfx: sound.sfx, music: sound.music, locale: "en")}
   end
 
   def handle_event("start", _params, socket) do
@@ -27,10 +27,7 @@ defmodule LightsOutWeb.Index do
   end
 
   def handle_info({:language_changed, locale}, socket) do
-    translations = LightsOut.Translations.get_translations()
-    translations = Map.get(translations, locale, %{})
-
-    {:noreply, assign(socket, translations: translations)}
+    {:noreply, assign(socket, locale: locale)}
   end
 
   defp assign_sounds(socket) do

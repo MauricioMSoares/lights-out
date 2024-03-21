@@ -1,8 +1,10 @@
 defmodule LightsOut.Timer do
+  alias LightsOut.Translations
+
   @minute 60
   @hour @minute * 60
 
-  def get_time(start_datetime) do
+  def get_time(start_datetime, locale) do
     now = DateTime.utc_now()
     diff = DateTime.diff(now, start_datetime)
 
@@ -12,13 +14,17 @@ defmodule LightsOut.Timer do
 
     cond do
       hours > 0 ->
-        "#{hours} #{pluralize("hour", hours)}, #{minutes} min and #{seconds} sec"
+        if locale != "ja" do
+          "#{hours} #{pluralize(Translations.get_translation(locale, "hour"), hours)}, #{minutes} #{Translations.get_translation(locale, "min")} #{seconds} #{Translations.get_translation(locale, "sec")}"
+        else
+          "#{hours} #{Translations.get_translation(locale, "hour")} #{minutes} #{Translations.get_translation(locale, "min")} #{seconds} #{Translations.get_translation(locale, "sec")}"
+        end
 
       minutes > 0 ->
-        "#{minutes} min and #{seconds} sec"
+        "#{minutes} #{Translations.get_translation(locale, "min")} #{seconds} #{Translations.get_translation(locale, "sec")}"
 
       true ->
-        "#{seconds} sec"
+        "#{seconds} #{Translations.get_translation(locale, "sec")}"
     end
   end
 

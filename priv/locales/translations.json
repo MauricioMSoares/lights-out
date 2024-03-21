@@ -1,6 +1,7 @@
 {
   "en": {
     "language": "English",
+    "title": "Lights Out",
     "instruction1": "Each click switches the adjacent lights, in the shape of a cross.",
     "instruction2": "The game starts with a random pattern of lights on.",
     "instruction3": "Turn all of them off to win!",
@@ -10,10 +11,14 @@
     "victory": "You won!",
     "clicks": "Total clicks: ",
     "time": "Time spent: ",
+    "hour": "hour",
+    "min": "min",
+    "sec": "sec",
     "play_again": "Play again"
   },
   "es": {
     "language": "Español",
+    "title": "Lights Out",
     "instruction1": "Cada clic cambia las luces adyacentes, en forma de cruz.",
     "instruction2": "El juego comienza con un patrón aleatorio de luces encendidas.",
     "instruction3": "¡Apaga todas para ganar!",
@@ -23,10 +28,14 @@
     "victory": "¡Ganaste!",
     "clicks": "Total de clics: ",
     "time": "Tiempo transcurrido: ",
+    "hour": "hora",
+    "min": "min",
+    "sec": "seg",
     "play_again": "Jugar de nuevo"
   },
   "pt": {
     "language": "Português",
+    "title": "Lights Out",
     "instruction1": "Cada clique muda as luzes adjacentes, em forma de cruz.",
     "instruction2": "O jogo começa com um padrão aleatório de luzes acesas.",
     "instruction3": "Apague todas para ganhar!",
@@ -36,10 +45,14 @@
     "victory": "Você ganhou!",
     "clicks": "Total de cliques: ",
     "time": "Tempo decorrido: ",
+    "hour": "hora",
+    "min": "min",
+    "sec": "seg",
     "play_again": "Jogar novamente"
   },
   "ja": {
     "language": "日本語",
+    "title": "ライトアウト",
     "instruction1": "隣り合うライトをクリックすると、その周囲のライトが切り替わります。",
     "instruction2": "ゲームはランダムなパターンで始まります。",
     "instruction3": "すべてのライトを消して勝利しましょう！",
@@ -49,6 +62,9 @@
     "victory": "勝利！",
     "clicks": "クリック数: ",
     "time": "経過時間: ",
+    "hour": "時間",
+    "min": "分",
+    "sec": "秒",
     "play_again": "もう一度プレイ"
   }
 }

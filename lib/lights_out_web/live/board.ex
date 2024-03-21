@@ -1,7 +1,7 @@
 defmodule LightsOutWeb.Board do
   use LightsOutWeb, :live_view
 
-  import LightsOut.Timer, only: [get_time: 1]
+  import LightsOut.Timer, only: [get_time: 2]
 
   alias LightsOut.SoundServer
 
@@ -19,7 +19,8 @@ defmodule LightsOutWeb.Board do
        bg_sound_timer: nil,
        sfx: sound.sfx,
        music: sound.music,
-       cheer_button_enabled: true
+       cheer_button_enabled: true,
+       locale: "en"
      )}
   end
 
@@ -54,7 +55,7 @@ defmodule LightsOutWeb.Board do
 
     case win do
       true ->
-        socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime))
+        socket = assign(socket, time_spent: get_time(socket.assigns.start_datetime, socket.assigns.locale))
         if socket.assigns.music do
           send(self(), :stop_bg_sound)
           send(self(), :play_win)

@@ -31,7 +31,7 @@
           end
         }
       >
-        Main screen
+        <%= LightsOut.Translations.get_translation(@locale, "main_screen") %>
       </button>
       <button
         class="bg-black text-white w-28 px-2 py-2 font-semibold rounded-xl mt-4"
@@ -44,7 +44,7 @@
           end
         }
       >
-        Restart
+        <%= LightsOut.Translations.get_translation(@locale, "restart") %>
       </button>
     </div>
   </div>
@@ -55,5 +55,6 @@
     clicks={@clicks}
     time_spent={@time_spent}
     sfx={@sfx}
+    locale={@locale}
   />
 </div>

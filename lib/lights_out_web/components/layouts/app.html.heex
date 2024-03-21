@@ -1,6 +1,6 @@
 <main class="px-4 py-20 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-2xl">
-    <h1 class="text-center text-4xl font-bold font-mono">Lights Out</h1>
+    <h1 class="text-center text-4xl font-bold font-mono"> <%= LightsOut.Translations.get_translation(@locale, "title") %> </h1>
     <div class="flex justify-between">
       <%= if Map.has_key?(assigns, :win) do %>
         <span
