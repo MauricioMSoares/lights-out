@@ -12,16 +12,15 @@
       <select
         class="border-2 rounded"
         id="translations_dropdown"
-        phx-change="change_language"
+        name="translations_dropdown"
         phx-blur="close_dropdown"
+        phx-change="change_language"
+        phx-target={@myself}
+        phx-hook="FocusSelect"
       >
-        <%!-- <%= for language <- @languages do %>
-      <option value={language.code}><%= language.name %></option>
-    <% end %> --%>
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="pt">Português</option>
-        <option value="ja">日本語</option>
+        <%= for {locale, details} <- @languages do %>
+          <option value={locale}><%= details["language"] %></option>
+        <% end %>
       </select>
     <% end %>
   </div>

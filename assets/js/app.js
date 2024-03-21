@@ -23,9 +23,11 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
 import * as AudioMp3 from "./hooks/audio_mp3"
+import * as FocusSelect from "./hooks/focus"
 
 let Hooks = Object.assign({},
-  AudioMp3.hooks
+  AudioMp3.hooks,
+  FocusSelect.hooks
 )
 
 const shootConfetti = () => {

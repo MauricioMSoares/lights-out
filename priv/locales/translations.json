@@ -1,5 +1,6 @@
 {
   "en": {
+    "language": "English",
     "instruction1": "Each click switches the adjacent lights, in the shape of a cross.",
     "instruction2": "The game starts with a random pattern of lights on.",
     "instruction3": "Turn all of them off to win!",
@@ -12,6 +13,7 @@
     "play_again": "Play again"
   },
   "es": {
+    "language": "Español",
     "instruction1": "Cada clic cambia las luces adyacentes, en forma de cruz.",
     "instruction2": "El juego comienza con un patrón aleatorio de luces encendidas.",
     "instruction3": "¡Apaga todas para ganar!",
@@ -24,6 +26,7 @@
     "play_again": "Jugar de nuevo"
   },
   "pt": {
+    "language": "Português",
     "instruction1": "Cada clique muda as luzes adjacentes, em forma de cruz.",
     "instruction2": "O jogo começa com um padrão aleatório de luzes acesas.",
     "instruction3": "Apague todas para ganhar!",
@@ -36,6 +39,7 @@
     "play_again": "Jogar novamente"
   },
   "ja": {
+    "language": "日本語",
     "instruction1": "隣り合うライトをクリックすると、その周囲のライトが切り替わります。",
     "instruction2": "ゲームはランダムなパターンで始まります。",
     "instruction3": "すべてのライトを消して勝利しましょう！",

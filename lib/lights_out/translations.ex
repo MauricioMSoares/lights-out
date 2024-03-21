@@ -3,7 +3,7 @@ defmodule LightsOut.Translations do
   Module for handling translations.
   """
 
-  @translations_file "translations.json"
+  @translations_file Path.join([:code.priv_dir(:lights_out), "locales", "translations.json"])
 
   def get_translations do
     @translations_file
