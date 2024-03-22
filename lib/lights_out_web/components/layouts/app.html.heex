@@ -1,6 +1,8 @@
 <main class="px-4 py-20 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-2xl">
-    <h1 class="text-center text-4xl font-bold font-mono"> <%= LightsOut.Translations.get_translation(@locale, "title") %> </h1>
+    <h1 class="text-center text-4xl font-bold font-mono">
+      <%= LightsOut.Translations.get_translation(@locale, "title") %>
+    </h1>
     <div class="flex justify-between">
       <%= if Map.has_key?(assigns, :win) do %>
         <span
@@ -14,6 +16,9 @@
         <span></span>
       <% end %>
       <div class="flex">
+        <%= if Map.has_key?(assigns, :win) && @win do %>
+          <.live_component module={LightsOutWeb.ShareButton} id={:share} />
+        <% end %>
         <span
           class="material-symbols-outlined border-2 rounded-lg px-1 py-1 mb-4 cursor-pointer mr-1"
           phx-click="toggle_sfx"
