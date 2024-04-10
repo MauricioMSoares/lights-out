@@ -60,14 +60,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Configures ExTwitter
-config :extwitter, :oauth, [
-  consumer_key: System.get_env("X_API_KEY"),
-  consumer_secret: System.get_env("X_API_SECRET"),
-  access_token: System.get_env("X_ACCESS_TOKEN"),
-  access_token_secret: System.get_env("X_ACCESS_TOKEN_SECRET")
-]
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

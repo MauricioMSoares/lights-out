@@ -56,8 +56,7 @@ defmodule LightsOut.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:dotenv, "~> 3.1"},
-      {:oauther, "~> 1.1"},
-      {:extwitter, "~> 0.12"}
+      {:httpoison, "~> 2.2.1"}
     ]
   end
 
